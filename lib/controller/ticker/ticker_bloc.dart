@@ -14,10 +14,10 @@ class TickerBloc extends Bloc<TickerEvent, TickerState> {
   TickerBloc(Ticker ticker)
       : _ticker = ticker,
         super(const TickerInitial()) {
-    on<TickerStarted>(_onStart);
-    on<TickerExtended>(_onExtended);
-    on<TickerTicked>(_onTicked);
-    on<TickerStopped>(_onStopped);
+    on<StartTicker>(_onStarted);
+    on<ExtendTicker>(_onExtended);
+    on<TickTicker>(_onTicked);
+    on<StopTicker>(_onStopped);
   }
 
   @override
@@ -26,20 +26,20 @@ class TickerBloc extends Bloc<TickerEvent, TickerState> {
     return super.close();
   }
 
-  void _onStart(TickerStarted event, Emitter<TickerState> emit) {
+  void _onStarted(StartTicker event, Emitter<TickerState> emit) {
     _tickerSubscription?.cancel();
     _tickerSubscription = _ticker.tick(60).listen((tick) {
-      add(TickerTicked(tick));
+      add(TickTicker(tick));
     });
   }
 
-  void _onTicked(TickerTicked event, Emitter<TickerState> emit) {
+  void _onTicked(TickTicker event, Emitter<TickerState> emit) {
     emit(state.duration > 0
         ? TickerRunning(event.duration)
         : const TickerCompleted());
   }
 
-  void _onExtended(TickerExtended event, Emitter<TickerState> emit) {
+  void _onExtended(ExtendTicker event, Emitter<TickerState> emit) {
     var extentedTime = state.duration + 10;
     if (state.duration + 10 > 60) {
       extentedTime = 60;
@@ -47,12 +47,12 @@ class TickerBloc extends Bloc<TickerEvent, TickerState> {
     if (state is TickerRunning) {
       _tickerSubscription?.cancel();
       _tickerSubscription = _ticker.tick(extentedTime).listen((tick) {
-        add(TickerTicked(tick));
+        add(TickTicker(tick));
       });
     }
   }
 
-  void _onStopped(TickerStopped event, Emitter<TickerState> emit) {
+  void _onStopped(StopTicker event, Emitter<TickerState> emit) {
     if (state is TickerRunning) {
       _tickerSubscription?.cancel();
       emit(const TickerInitial());

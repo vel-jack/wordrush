@@ -5,7 +5,8 @@ WORD RUSH. Mini game using FLUTTER!
 Todo.
 -  [x] Custom widgets/button
 -  [x] Bloc for timer
--  [ ] UI for menu
--  [ ] UI for game
+-  [x] UI for menu/home
+-  [x] UI for game
+-  [ ] Lock orientation to Portrait
 -  [ ] Game mechanics
 -  [ ] Firebase integration

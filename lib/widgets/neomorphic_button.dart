@@ -5,19 +5,17 @@ class NeomorphicButton extends StatelessWidget {
   const NeomorphicButton({
     Key? key,
     required this.child,
-    required this.onPressed,
-    required this.isClicked,
-    this.height = 80.0,
-    this.width = 80.0,
-    this.radius = 50.0,
+    this.onPressed,
+    this.size = 80.0,
+    this.isClicked = false,
+    this.radius = 100.0,
   }) : super(key: key);
 
   final Widget child;
-  final VoidCallback onPressed;
-  final double? width;
-  final double? height;
-  final double? radius;
+  final VoidCallback? onPressed;
+  final double size;
   final bool isClicked;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +24,8 @@ class NeomorphicButton extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeIn,
-        width: width,
-        height: height,
+        width: size,
+        height: size,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius!),

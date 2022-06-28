@@ -12,15 +12,16 @@ class NeomorphicProgress extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: kLightBgColor,
           boxShadow: [
             BoxShadow(
-              offset: const Offset(10, 10),
+              offset: const Offset(5, 5),
               color: kDarkShadowColor,
-              blurRadius: 10,
+              blurRadius: 8,
+              spreadRadius: -4,
             ),
             const BoxShadow(
               offset: Offset(-10, -10),
@@ -31,6 +32,7 @@ class NeomorphicProgress extends StatelessWidget {
       child: CircularProgressIndicator(
         value: value,
         color: kDarkShadowColor,
+        backgroundColor: Colors.grey.shade100,
         strokeWidth: 8,
       ),
     );

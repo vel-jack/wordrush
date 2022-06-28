@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
 class GreyIcon extends StatelessWidget {
-  const GreyIcon(
-      {Key? key,
-      required this.icon,
-      this.size = 24.0,
-      this.color = Colors.grey})
+  const GreyIcon(this.icon,
+      {Key? key, this.size = 24.0, this.color = Colors.grey})
       : super(key: key);
   final IconData icon;
   final double? size;
