@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/route_manager.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart'
+    as get_transition;
+// package:get/get_navigation/src/routes/transitions_type.dart
 import 'package:wordrush/controller/ticker/ticker.dart';
 import 'package:wordrush/controller/ticker/ticker_bloc.dart';
 import 'package:wordrush/controller/word/word_bloc.dart';
 import 'package:wordrush/utils/constants.dart';
+import 'package:wordrush/views/game_over.dart';
 import 'package:wordrush/widgets/grey_icon.dart';
+
 import 'package:wordrush/widgets/grey_text.dart';
 import 'package:wordrush/widgets/neomorphic_button.dart';
 import 'package:wordrush/widgets/neomorphic_progress.dart';
@@ -18,37 +23,35 @@ class GameRootWidget extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<TickerBloc>(
-          create: (context) => TickerBloc(const Ticker()),
+          create: (context) => TickerBloc(const Ticker())..add(StartTicker()),
         ),
         BlocProvider(
           create: (context) => WordBloc(
-            // ['BALL', 'DONE', 'GOLD', 'DART', 'NODE', 'TARD']..shuffle()),
-            ['BALL', 'DONE']..shuffle(),
-          ),
+              ['BALL', 'DONE', 'GOLD', 'DART', 'NODE', 'TARD']..shuffle()),
         )
       ],
-      child: const GamePage(),
+      child: const _GamePage(),
     );
   }
 }
 
-class GamePage extends StatelessWidget {
-  const GamePage({Key? key}) : super(key: key);
+class _GamePage extends StatelessWidget {
+  const _GamePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kLightBgColor,
       body: BlocConsumer<WordBloc, WordState>(
         listener: (context, state) {
-          if (state is WordLoadedState) {
+          if (state is CorrectWordState) {
+            context.read<TickerBloc>().add(ExtendTicker());
+          } else if (state is WordLoadedState) {
             if (!state.answer.contains('')) {
               context.read<WordBloc>().add(CheckWordEvent());
             }
           }
         },
         builder: (context, state) {
-          debugPrint('$state');
           if (state is GameCompletedState) {
             return Center(
               child: Column(
@@ -60,24 +63,25 @@ class GamePage extends StatelessWidget {
                           "Hey I'm looking for the words to describe you"),
                     ),
                     const SizedBox(height: 30),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        TweenAnimationBuilder<double>(
-                            tween: Tween<double>(begin: 1.0, end: 0.0),
-                            duration: const Duration(seconds: 1),
-                            curve: Curves.slowMiddle,
-                            builder: (context, value, widget) {
-                              return GestureDetector(
-                                  onTap: () => Get.back(),
-                                  child: NeomorphicProgress(value: value));
-                            }),
-                        GreyIcon(
-                          Icons.done_rounded,
-                          size: 100,
-                          color: kDarkShadowColor,
-                        )
-                      ],
+                    GestureDetector(
+                      onTap: () => Get.back(),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          TweenAnimationBuilder<double>(
+                              tween: Tween<double>(begin: 1.0, end: 0.0),
+                              duration: const Duration(seconds: 2),
+                              curve: Curves.slowMiddle,
+                              builder: (context, value, widget) {
+                                return NeomorphicProgress(value: value);
+                              }),
+                          GreyIcon(
+                            Icons.done_rounded,
+                            size: 100,
+                            color: kDarkShadowColor,
+                          )
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 30),
                     const GreyText(
@@ -171,9 +175,26 @@ class GamePage extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  const NeomorphicProgress(
-                    size: 300,
-                    value: 0.4,
+                  BlocConsumer<TickerBloc, TickerState>(
+                    listener: (context, state) {
+                      if (state is TickerCompleted) {
+                        // TODO need to pass scores
+                        Get.off(() => const GameOverPage(),
+                            transition: get_transition.Transition.cupertino);
+                      }
+                    },
+                    builder: (context, state) {
+                      return TweenAnimationBuilder<double>(
+                          duration: const Duration(seconds: 1),
+                          tween: Tween<double>(
+                              begin: 1.0, end: state.duration / 60),
+                          builder: (context, value, widget) {
+                            return NeomorphicProgress(
+                              size: 300,
+                              value: value,
+                            );
+                          });
+                    },
                   ),
                   Container(
                     height: 200,

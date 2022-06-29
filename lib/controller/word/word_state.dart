@@ -31,3 +31,9 @@ class IncorrectWordState extends WordState {
       List<String> quest, List<String> answer, String word, List<bool> clicked)
       : super(quest, answer, word, clicked);
 }
+
+class CorrectWordState extends WordState {
+  const CorrectWordState(
+      List<String> quest, List<String> answer, String word, List<bool> clicked)
+      : super(quest, answer, word, clicked);
+}

@@ -22,6 +22,4 @@ class RemoveLetterEvent extends WordEvent {
   const RemoveLetterEvent(this.index);
 }
 
-class WordFoundEvent extends WordEvent {}
-
 class CheckWordEvent extends WordEvent {}

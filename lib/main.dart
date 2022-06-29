@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
+import 'package:wordrush/utils/constants.dart';
 import 'package:wordrush/views/home_page.dart';
 
 void main() {
@@ -14,10 +15,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       title: 'Word Rush',
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const HomePage(),
+      theme: Theme.of(context).copyWith(scaffoldBackgroundColor: kLightBgColor),
     );
   }
 }

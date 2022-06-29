@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -8,13 +6,13 @@ part 'word_state.dart';
 
 class WordBloc extends Bloc<WordEvent, WordState> {
   final List<String> _words;
+
   WordBloc(List<String> words)
       : _words = words,
         super(WordInitialState(words.first)) {
     on<AddWordEvent>(_onWordAdded);
     on<AddLetterEvent>(_onLetterAdded);
     on<RemoveLetterEvent>(_onLetterRemoved);
-    // on<WordFoundEvent>(_onWordFound);
     on<CheckWordEvent>(_onCheckWord);
   }
 
@@ -44,24 +42,21 @@ class WordBloc extends Bloc<WordEvent, WordState> {
     emit(WordLoadedState(state.quest, answer, state.word, clicked));
   }
 
-  // void _onWordFound(WordFoundEvent event, Emitter<WordState> emit) {
-  //   // pop the word
-  //   // get a new random word
-  // }
-
-  void _onCheckWord(CheckWordEvent event, Emitter<WordState> emit) {
+  void _onCheckWord(CheckWordEvent event, Emitter<WordState> emit) async {
     if (_words.contains(state.answer.join())) {
-      log('found');
       if (state is WordLoadedState) {
         _words.remove(state.word);
         if (_words.isNotEmpty) {
-          emit(WordInitialState(_words.first));
+          emit(CorrectWordState(
+              state.quest, state.answer, state.word, state.clicked));
+          await Future.delayed(const Duration(milliseconds: 200), () {
+            emit(WordInitialState(_words.first));
+          });
         } else {
           emit(GameCompletedState());
         }
       }
     } else {
-      log('not found');
       emit(IncorrectWordState(
           state.quest, List.filled(4, ''), state.word, List.filled(4, false)));
     }

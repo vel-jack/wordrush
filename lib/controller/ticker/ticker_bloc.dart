@@ -9,6 +9,7 @@ part 'ticker_state.dart';
 
 class TickerBloc extends Bloc<TickerEvent, TickerState> {
   final Ticker _ticker;
+  final int duration = 60;
   StreamSubscription<int>? _tickerSubscription;
 
   TickerBloc(Ticker ticker)
@@ -28,21 +29,21 @@ class TickerBloc extends Bloc<TickerEvent, TickerState> {
 
   void _onStarted(StartTicker event, Emitter<TickerState> emit) {
     _tickerSubscription?.cancel();
-    _tickerSubscription = _ticker.tick(60).listen((tick) {
+    _tickerSubscription = _ticker.tick(duration).listen((tick) {
       add(TickTicker(tick));
     });
   }
 
   void _onTicked(TickTicker event, Emitter<TickerState> emit) {
-    emit(state.duration > 0
+    emit(state.duration > 1
         ? TickerRunning(event.duration)
         : const TickerCompleted());
   }
 
   void _onExtended(ExtendTicker event, Emitter<TickerState> emit) {
-    var extentedTime = state.duration + 10;
-    if (state.duration + 10 > 60) {
-      extentedTime = 60;
+    var extentedTime = state.duration + 5;
+    if (state.duration + 10 > duration) {
+      extentedTime = duration;
     }
     if (state is TickerRunning) {
       _tickerSubscription?.cancel();
