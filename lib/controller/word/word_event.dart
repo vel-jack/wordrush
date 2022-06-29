@@ -7,17 +7,21 @@ abstract class WordEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AddWord extends WordEvent {
+class AddWordEvent extends WordEvent {
   final String word;
-  const AddWord(this.word);
+  const AddWordEvent(this.word);
 }
 
-class AddLetter extends WordEvent {
+class AddLetterEvent extends WordEvent {
   final int index;
-  const AddLetter(this.index);
+  const AddLetterEvent(this.index);
 }
 
-class RemoveLetter extends WordEvent {
+class RemoveLetterEvent extends WordEvent {
   final int index;
-  const RemoveLetter(this.index);
+  const RemoveLetterEvent(this.index);
 }
+
+class WordFoundEvent extends WordEvent {}
+
+class CheckWordEvent extends WordEvent {}

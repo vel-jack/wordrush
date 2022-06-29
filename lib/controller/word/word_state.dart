@@ -10,14 +10,24 @@ abstract class WordState extends Equatable {
   List<Object> get props => [quest, answer, word, clicked];
 }
 
-class WordInitial extends WordState {
-  WordInitial()
-      : super(['', '', '', ''], ['', '', '', ''], '',
-            [false, false, false, false]);
+class WordInitialState extends WordState {
+  WordInitialState(String word)
+      : super(word.split('')..shuffle(), List.filled(4, ''), word,
+            List.filled(4, false));
 }
 
-class WordLoaded extends WordState {
-  const WordLoaded(
+class WordLoadedState extends WordState {
+  const WordLoadedState(
+      List<String> quest, List<String> answer, String word, List<bool> clicked)
+      : super(quest, answer, word, clicked);
+}
+
+class GameCompletedState extends WordState {
+  GameCompletedState() : super([], [], '', []);
+}
+
+class IncorrectWordState extends WordState {
+  const IncorrectWordState(
       List<String> quest, List<String> answer, String word, List<bool> clicked)
       : super(quest, answer, word, clicked);
 }

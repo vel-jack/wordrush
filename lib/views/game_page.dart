@@ -21,7 +21,10 @@ class GameRootWidget extends StatelessWidget {
           create: (context) => TickerBloc(const Ticker()),
         ),
         BlocProvider(
-          create: (context) => WordBloc(),
+          create: (context) => WordBloc(
+            // ['BALL', 'DONE', 'GOLD', 'DART', 'NODE', 'TARD']..shuffle()),
+            ['BALL', 'DONE']..shuffle(),
+          ),
         )
       ],
       child: const GamePage(),
@@ -36,8 +39,54 @@ class GamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kLightBgColor,
-      body: BlocBuilder<WordBloc, WordState>(
+      body: BlocConsumer<WordBloc, WordState>(
+        listener: (context, state) {
+          if (state is WordLoadedState) {
+            if (!state.answer.contains('')) {
+              context.read<WordBloc>().add(CheckWordEvent());
+            }
+          }
+        },
         builder: (context, state) {
+          debugPrint('$state');
+          if (state is GameCompletedState) {
+            return Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 18.0),
+                      child: GreyText(
+                          "Hey I'm looking for the words to describe you"),
+                    ),
+                    const SizedBox(height: 30),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        TweenAnimationBuilder<double>(
+                            tween: Tween<double>(begin: 1.0, end: 0.0),
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.slowMiddle,
+                            builder: (context, value, widget) {
+                              return GestureDetector(
+                                  onTap: () => Get.back(),
+                                  child: NeomorphicProgress(value: value));
+                            }),
+                        GreyIcon(
+                          Icons.done_rounded,
+                          size: 100,
+                          color: kDarkShadowColor,
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    const GreyText(
+                      'COMPLETED 🎮',
+                      isDown: true,
+                    )
+                  ]),
+            );
+          }
           return Column(
             children: [
               const SizedBox(height: 40),
@@ -72,20 +121,45 @@ class GamePage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                    4,
-                    (i) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: NeomorphicButton(
-                            size: 60,
-                            radius: 10,
-                            isClicked: state.answer[i].isEmpty,
-                            child: GreyText(state.answer[i]),
-                          ),
-                        )).toList(),
-              ),
+              if (state is IncorrectWordState)
+                TweenAnimationBuilder<double>(
+                    duration: const Duration(milliseconds: 500),
+                    tween: Tween<double>(begin: 10.0, end: 0.0),
+                    curve: Curves.bounceOut,
+                    builder: (context, value, widget) {
+                      return Transform.translate(
+                        offset: Offset(value, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                              4,
+                              (i) => Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: NeomorphicButton(
+                                      size: 60,
+                                      radius: 10,
+                                      isClicked: state.answer[i].isEmpty,
+                                      child: GreyText(state.answer[i]),
+                                    ),
+                                  )).toList(),
+                        ),
+                      );
+                    })
+              else
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                      4,
+                      (i) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: NeomorphicButton(
+                              size: 60,
+                              radius: 10,
+                              isClicked: state.answer[i].isEmpty,
+                              child: GreyText(state.answer[i]),
+                            ),
+                          )).toList(),
+                ),
               Container(
                 height: 80,
                 margin: const EdgeInsets.all(10),
@@ -121,10 +195,10 @@ class GamePage extends StatelessWidget {
                                     state.clicked[i]
                                         ? context
                                             .read<WordBloc>()
-                                            .add(RemoveLetter(i))
+                                            .add(RemoveLetterEvent(i))
                                         : context
                                             .read<WordBloc>()
-                                            .add(AddLetter(i));
+                                            .add(AddLetterEvent(i));
                                   },
                                   child: GreyText(
                                     state.quest[i],
@@ -143,7 +217,7 @@ class GamePage extends StatelessWidget {
                     size: 70,
                     child: const GreyIcon(Icons.fast_forward),
                     onPressed: () {
-                      context.read<WordBloc>().add(const AddWord('BALL'));
+                      context.read<WordBloc>().add(const AddWordEvent('BALL'));
                     },
                   ),
                   const Positioned(

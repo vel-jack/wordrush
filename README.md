@@ -7,6 +7,6 @@ Todo.
 -  [x] Bloc for timer
 -  [x] UI for menu/home
 -  [x] UI for game
--  [ ] Lock orientation to Portrait
+-  [x] Lock orientation to Portrait
 -  [ ] Game mechanics
 -  [ ] Firebase integration
