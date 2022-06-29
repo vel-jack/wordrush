@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -10,16 +12,10 @@ class WordBloc extends Bloc<WordEvent, WordState> {
   WordBloc(List<String> words)
       : _words = words,
         super(WordInitialState(words.first)) {
-    on<AddWordEvent>(_onWordAdded);
     on<AddLetterEvent>(_onLetterAdded);
     on<RemoveLetterEvent>(_onLetterRemoved);
     on<CheckWordEvent>(_onCheckWord);
-  }
-
-  void _onWordAdded(AddWordEvent event, Emitter<WordState> emit) {
-    final quest = event.word.split('')..shuffle();
-
-    emit(WordLoadedState(quest, state.answer, event.word, state.clicked));
+    on<SkipWordEvent>(_onSkipWordEvent);
   }
 
   void _onLetterAdded(AddLetterEvent event, Emitter<WordState> emit) {
@@ -43,9 +39,10 @@ class WordBloc extends Bloc<WordEvent, WordState> {
   }
 
   void _onCheckWord(CheckWordEvent event, Emitter<WordState> emit) async {
-    if (_words.contains(state.answer.join())) {
+    final answer = state.answer.join();
+    if (_words.contains(answer)) {
       if (state is WordLoadedState) {
-        _words.remove(state.word);
+        _words.remove(answer);
         if (_words.isNotEmpty) {
           emit(CorrectWordState(
               state.quest, state.answer, state.word, state.clicked));
@@ -60,5 +57,11 @@ class WordBloc extends Bloc<WordEvent, WordState> {
       emit(IncorrectWordState(
           state.quest, List.filled(4, ''), state.word, List.filled(4, false)));
     }
+  }
+
+  void _onSkipWordEvent(SkipWordEvent event, Emitter<WordState> emit) {
+    _words.shuffle();
+    // log(_words.toString());
+    emit(WordInitialState(_words.first));
   }
 }

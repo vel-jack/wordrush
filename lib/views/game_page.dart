@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart'
     as get_transition;
-// package:get/get_navigation/src/routes/transitions_type.dart
 import 'package:wordrush/controller/ticker/ticker.dart';
 import 'package:wordrush/controller/ticker/ticker_bloc.dart';
 import 'package:wordrush/controller/word/word_bloc.dart';
@@ -40,10 +39,12 @@ class _GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Rx<int> score = 0.obs;
     return Scaffold(
       body: BlocConsumer<WordBloc, WordState>(
         listener: (context, state) {
           if (state is CorrectWordState) {
+            score.value += 1;
             context.read<TickerBloc>().add(ExtendTicker());
           } else if (state is WordLoadedState) {
             if (!state.answer.contains('')) {
@@ -99,7 +100,7 @@ class _GamePage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0).copyWith(left: 16),
                     child: NeomorphicButton(
-                        size: 50,
+                        size: 60,
                         onPressed: () {
                           Get.back();
                         },
@@ -111,11 +112,20 @@ class _GamePage extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
-                      children: const [
-                        GreyText(
-                          '10',
-                          size: 30,
-                        ),
+                      children: [
+                        Obx(() {
+                          return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 100),
+                            transitionBuilder: (child, anim) {
+                              return ScaleTransition(scale: anim, child: child);
+                            },
+                            child: GreyText(
+                              key: Key(score.value.toString()),
+                              score.value.toString(),
+                              size: 30,
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),
@@ -168,7 +178,7 @@ class _GamePage extends StatelessWidget {
                 height: 80,
                 margin: const EdgeInsets.all(10),
                 child: const GreyText(
-                  '10',
+                  '', // TODO add greet message
                   size: 50,
                 ),
               ),
@@ -178,8 +188,10 @@ class _GamePage extends StatelessWidget {
                   BlocConsumer<TickerBloc, TickerState>(
                     listener: (context, state) {
                       if (state is TickerCompleted) {
-                        // TODO need to pass scores
-                        Get.off(() => const GameOverPage(),
+                        Get.off(
+                            () => GameOverPage(
+                                  score: score.value,
+                                ),
                             transition: get_transition.Transition.cupertino);
                       }
                     },
@@ -232,26 +244,15 @@ class _GamePage extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              Stack(
-                children: [
-                  NeomorphicButton(
-                    size: 70,
-                    child: const GreyIcon(Icons.fast_forward),
-                    onPressed: () {
-                      context.read<WordBloc>().add(const AddWordEvent('BALL'));
-                    },
-                  ),
-                  const Positioned(
-                      top: 0,
-                      right: 0,
-                      child: NeomorphicButton(
-                        size: 30,
-                        child: GreyText(
-                          '1',
-                          size: 18,
-                        ),
-                      )),
-                ],
+              NeomorphicButton(
+                size: 70,
+                child: const GreyIcon(
+                  Icons.fast_forward,
+                  size: 34,
+                ),
+                onPressed: () {
+                  context.read<WordBloc>().add(SkipWordEvent());
+                },
               ),
               const Spacer()
             ],

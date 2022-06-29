@@ -8,5 +8,12 @@ Todo.
 -  [x] UI for menu/home
 -  [x] UI for game
 -  [x] Lock orientation to Portrait
--  [ ] Game mechanics
+-  [x] Game mechanics
 -  [ ] Firebase integration
+-  [ ] 
+-  [ ]
+
+Other :
+[ ] Github link
+[ ] Privacy policy
+[ ] 

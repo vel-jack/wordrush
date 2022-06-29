@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:wordrush/utils/constants.dart';
 import 'package:wordrush/views/game_page.dart';
 import 'package:wordrush/widgets/grey_icon.dart';
 import 'package:wordrush/widgets/grey_text.dart';
@@ -51,7 +50,8 @@ class HomePage extends StatelessWidget {
               NeomorphicButton(
                 child: const GreyIcon(Icons.leaderboard, size: 36),
                 onPressed: () {
-                  showMessage(context, 'In progress...', kDarkShadowColor);
+                  Get.snackbar('Leaderboard', 'Coming soon..',
+                      animationDuration: const Duration(milliseconds: 500));
                 },
               ),
               NeomorphicButton(
@@ -60,7 +60,8 @@ class HomePage extends StatelessWidget {
                   size: 36,
                 ),
                 onPressed: () {
-                  showMessage(context, 'In progress...', kDarkShadowColor);
+                  Get.snackbar('Google sign in', 'Coming soon..',
+                      animationDuration: const Duration(milliseconds: 500));
                 },
               ),
               const SizedBox()
@@ -70,19 +71,5 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void showMessage(BuildContext context, String hello, Color color,
-      {int seconds = 1}) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-        hello.toUpperCase(),
-        style:
-            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-      backgroundColor: color,
-      elevation: 10,
-      duration: Duration(seconds: seconds),
-    ));
   }
 }
