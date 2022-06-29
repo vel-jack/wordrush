@@ -9,11 +9,11 @@ Todo.
 -  [x] UI for game
 -  [x] Lock orientation to Portrait
 -  [x] Game mechanics
--  [ ] Firebase integration
--  [ ] 
--  [ ]
+-  [] Firebase integration
+-  [] 
+-  []
 
 Other :
-[ ] Github link
-[ ] Privacy policy
-[ ] 
+[] Github link
+[] Privacy policy
+[] 
