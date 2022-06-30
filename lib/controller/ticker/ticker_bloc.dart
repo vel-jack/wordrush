@@ -35,7 +35,7 @@ class TickerBloc extends Bloc<TickerEvent, TickerState> {
   }
 
   void _onTicked(TickTicker event, Emitter<TickerState> emit) {
-    emit(state.duration > 1
+    emit(state.duration > 0
         ? TickerRunning(event.duration)
         : const TickerCompleted());
   }

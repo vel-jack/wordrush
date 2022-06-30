@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:wordrush/controller/audio_controller.dart';
 import 'package:wordrush/views/game_page.dart';
 import 'package:wordrush/widgets/grey_icon.dart';
 import 'package:wordrush/widgets/grey_text.dart';
@@ -36,6 +37,7 @@ class GameOverPage extends StatelessWidget {
                 NeomorphicButton(
                   child: const GreyIcon(Icons.home, size: 36),
                   onPressed: () {
+                    AudioController().tap.resume();
                     Get.back();
                     // showMessage(context, 'In progress...', kDarkShadowColor);
                   },
@@ -46,6 +48,7 @@ class GameOverPage extends StatelessWidget {
                     size: 36,
                   ),
                   onPressed: () {
+                    AudioController().tap.resume();
                     Get.off(() => const GameRootWidget(),
                         transition: Transition.upToDown);
                   },

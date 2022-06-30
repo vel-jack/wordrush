@@ -11,8 +11,11 @@ Todo.
 -  [x] Game mechanics
 -  [ ] Firebase integration
     -  [x] FirebaseAuth
-    -  [ ] Firestore for score and etc.
+    -  [x] Firestore for score
+    -  [ ] Crashlytics
+    -  [ ] FirebaseMessaging
 
 Other :
 -  [ ] Github link
 -  [ ] Privacy policy
+-  [ ] Sound/Audio

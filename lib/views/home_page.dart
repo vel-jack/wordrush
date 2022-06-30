@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:wordrush/controller/audio_controller.dart';
 import 'package:wordrush/utils/constants.dart';
 import 'package:wordrush/views/game_page.dart';
 import 'package:wordrush/widgets/grey_icon.dart';
@@ -36,6 +37,7 @@ class HomePage extends StatelessWidget {
           NeomorphicButton(
             size: 150,
             onPressed: () {
+              AudioController().tap.resume();
               Get.to(
                 () => const GameRootWidget(),
                 transition: Transition.upToDown,
@@ -71,6 +73,7 @@ class HomePage extends StatelessWidget {
                           size: 36,
                         ),
                   onPressed: () async {
+                    AudioController().tap.resume();
                     if (userController.user == null) {
                       await userController.signIn();
                     } else {

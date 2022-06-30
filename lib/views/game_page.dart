@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart'
     as get_transition;
+import 'package:wordrush/controller/audio_controller.dart';
 import 'package:wordrush/controller/ticker/ticker.dart';
 import 'package:wordrush/controller/ticker/ticker_bloc.dart';
 import 'package:wordrush/controller/word/word_bloc.dart';
@@ -44,6 +45,7 @@ class _GamePage extends StatelessWidget {
       body: BlocConsumer<WordBloc, WordState>(
         listener: (context, state) {
           if (state is CorrectWordState) {
+            AudioController().correct.resume();
             score.value += 1;
             context.read<TickerBloc>().add(ExtendTicker());
           } else if (state is WordLoadedState) {
@@ -51,9 +53,13 @@ class _GamePage extends StatelessWidget {
               context.read<WordBloc>().add(CheckWordEvent());
             }
           }
+          if (state is IncorrectWordState) {
+            AudioController().error.resume();
+          }
         },
         builder: (context, state) {
           if (state is GameCompletedState) {
+            AudioController().done.resume();
             if (score.value > userController.score) {
               userController.setScore(score.value);
             }
@@ -68,7 +74,10 @@ class _GamePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 30),
                     GestureDetector(
-                      onTap: () => Get.back(),
+                      onTap: () {
+                        AudioController().tap.resume();
+                        Get.back();
+                      },
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
@@ -105,6 +114,7 @@ class _GamePage extends StatelessWidget {
                     child: NeomorphicButton(
                         size: 60,
                         onPressed: () {
+                          AudioController().tap.resume();
                           Get.back();
                         },
                         child: const GreyIcon(
@@ -190,7 +200,13 @@ class _GamePage extends StatelessWidget {
                 children: [
                   BlocConsumer<TickerBloc, TickerState>(
                     listener: (context, state) {
+                      if (state is TickerRunning) {
+                        if (state.duration < 6) {
+                          AudioController().tick.resume();
+                        }
+                      }
                       if (state is TickerCompleted) {
+                        AudioController().done.resume();
                         int best = userController.score;
                         if (score.value > best) {
                           userController.setScore(score.value);
@@ -234,6 +250,7 @@ class _GamePage extends StatelessWidget {
                                   radius: 20,
                                   isClicked: state.clicked[i],
                                   onPressed: () {
+                                    AudioController().tap.resume();
                                     state.clicked[i]
                                         ? context
                                             .read<WordBloc>()
@@ -268,6 +285,7 @@ class _GamePage extends StatelessWidget {
                   size: 34,
                 ),
                 onPressed: () {
+                  AudioController().tap.resume();
                   context.read<WordBloc>().add(SkipWordEvent());
                 },
               ),
