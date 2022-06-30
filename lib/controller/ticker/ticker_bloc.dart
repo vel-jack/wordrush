@@ -9,7 +9,7 @@ part 'ticker_state.dart';
 
 class TickerBloc extends Bloc<TickerEvent, TickerState> {
   final Ticker _ticker;
-  final int duration = 60;
+  final int duration = 30;
   StreamSubscription<int>? _tickerSubscription;
 
   TickerBloc(Ticker ticker)
@@ -41,8 +41,8 @@ class TickerBloc extends Bloc<TickerEvent, TickerState> {
   }
 
   void _onExtended(ExtendTicker event, Emitter<TickerState> emit) {
-    var extentedTime = state.duration + 5;
-    if (state.duration + 10 > duration) {
+    var extentedTime = state.duration + 3;
+    if (state.duration + 3 > duration) {
       extentedTime = duration;
     }
     if (state is TickerRunning) {

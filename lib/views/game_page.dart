@@ -7,6 +7,7 @@ import 'package:wordrush/controller/ticker/ticker.dart';
 import 'package:wordrush/controller/ticker/ticker_bloc.dart';
 import 'package:wordrush/controller/word/word_bloc.dart';
 import 'package:wordrush/utils/constants.dart';
+import 'package:wordrush/utils/words.dart';
 import 'package:wordrush/views/game_over.dart';
 import 'package:wordrush/widgets/grey_icon.dart';
 
@@ -25,8 +26,7 @@ class GameRootWidget extends StatelessWidget {
           create: (context) => TickerBloc(const Ticker())..add(StartTicker()),
         ),
         BlocProvider(
-          create: (context) => WordBloc(
-              ['BALL', 'DONE', 'GOLD', 'DART', 'NODE', 'TARD']..shuffle()),
+          create: (context) => WordBloc(words..shuffle()),
         )
       ],
       child: const _GamePage(),
@@ -54,6 +54,9 @@ class _GamePage extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is GameCompletedState) {
+            if (score.value > userController.score) {
+              userController.setScore(score.value);
+            }
             return Center(
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -178,7 +181,7 @@ class _GamePage extends StatelessWidget {
                 height: 80,
                 margin: const EdgeInsets.all(10),
                 child: const GreyText(
-                  '', // TODO add greet message
+                  '', // ? Greet message in future
                   size: 50,
                 ),
               ),
@@ -188,9 +191,15 @@ class _GamePage extends StatelessWidget {
                   BlocConsumer<TickerBloc, TickerState>(
                     listener: (context, state) {
                       if (state is TickerCompleted) {
+                        int best = userController.score;
+                        if (score.value > best) {
+                          userController.setScore(score.value);
+                          best = score.value;
+                        }
                         Get.off(
                             () => GameOverPage(
                                   score: score.value,
+                                  bestScore: best,
                                 ),
                             transition: get_transition.Transition.cupertino);
                       }
@@ -199,7 +208,7 @@ class _GamePage extends StatelessWidget {
                       return TweenAnimationBuilder<double>(
                           duration: const Duration(seconds: 1),
                           tween: Tween<double>(
-                              begin: 1.0, end: state.duration / 60),
+                              begin: 1.0, end: state.duration / 30),
                           builder: (context, value, widget) {
                             return NeomorphicProgress(
                               size: 300,
@@ -243,6 +252,14 @@ class _GamePage extends StatelessWidget {
               ),
               const SizedBox(
                 height: 50,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: GreyText(
+                  'SKIP',
+                  size: 18,
+                  isDown: true,
+                ),
               ),
               NeomorphicButton(
                 size: 70,

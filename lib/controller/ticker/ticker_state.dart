@@ -8,7 +8,7 @@ abstract class TickerState extends Equatable {
 }
 
 class TickerInitial extends TickerState {
-  const TickerInitial() : super(60);
+  const TickerInitial() : super(30);
 }
 
 class TickerRunning extends TickerState {

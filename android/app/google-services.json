@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "379118590689",
+    "project_id": "word-rush-flutter",
+    "storage_bucket": "word-rush-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379118590689:android:b1373d5417303c72b675a0",
+        "android_client_info": {
+          "package_name": "com.emptybox.wordrush"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "379118590689-fd4ajpcc0vftat2q8bmep9hrkcoaa7a4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emptybox.wordrush",
+            "certificate_hash": "ffa682c40afb4db4b19a07f27215e9a365e851bf"
+          }
+        },
+        {
+          "client_id": "379118590689-l665fb6saanrp2vk4nt633n0q8fe1t2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC32JGXQnpuVOy5iX0043tFx_2Xxu_qt6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "379118590689-l665fb6saanrp2vk4nt633n0q8fe1t2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

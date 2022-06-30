@@ -10,7 +10,7 @@ Todo.
 -  [x] Lock orientation to Portrait
 -  [x] Game mechanics
 -  [ ] Firebase integration
-    -  [ ] FirebaseAuth
+    -  [x] FirebaseAuth
     -  [ ] Firestore for score and etc.
 
 Other :

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:get/state_manager.dart';
+import 'package:wordrush/utils/constants.dart';
 import 'package:wordrush/views/game_page.dart';
 import 'package:wordrush/widgets/grey_icon.dart';
 import 'package:wordrush/widgets/grey_text.dart';
@@ -17,10 +19,10 @@ class HomePage extends StatelessWidget {
           Container(
             alignment: Alignment.bottomRight,
             padding: const EdgeInsets.all(20).copyWith(top: 30),
-            child: const GreyText(
-              'Best : 23',
-              size: 20,
-            ),
+            child: Obx(() => GreyText(
+                  'Best : ${userController.score}',
+                  size: 20,
+                )),
           ),
           const GreyText(
             'WORD',
@@ -30,7 +32,7 @@ class HomePage extends StatelessWidget {
             'RUSH',
             size: 30,
           ),
-          const SizedBox(height: 100),
+          const Spacer(),
           NeomorphicButton(
             size: 150,
             onPressed: () {
@@ -42,31 +44,43 @@ class HomePage extends StatelessWidget {
             radius: 100,
             child: const GreyIcon(Icons.play_arrow, size: 100),
           ),
-          const SizedBox(height: 100),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const SizedBox(),
-              NeomorphicButton(
-                child: const GreyIcon(Icons.leaderboard, size: 36),
-                onPressed: () {
-                  Get.snackbar('Leaderboard', 'Coming soon..',
-                      animationDuration: const Duration(milliseconds: 500));
-                },
-              ),
-              NeomorphicButton(
-                child: const GreyIcon(
-                  Icons.sports_esports,
-                  size: 36,
+          const Spacer(),
+          Obx(() {
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GreyText(
+                    userController.isAuthLoading
+                        ? 'WAIT....'
+                        : userController.user == null
+                            ? 'SIGN IN'
+                            : 'SIGN OUT',
+                    size: 18,
+                    isDown: true,
+                  ),
                 ),
-                onPressed: () {
-                  Get.snackbar('Google sign in', 'Coming soon..',
-                      animationDuration: const Duration(milliseconds: 500));
-                },
-              ),
-              const SizedBox()
-            ],
-          ),
+                NeomorphicButton(
+                  size: 60,
+                  child: userController.isAuthLoading
+                      ? CircularProgressIndicator(
+                          color: kDarkShadowColor,
+                        )
+                      : const GreyIcon(
+                          Icons.sports_esports,
+                          size: 36,
+                        ),
+                  onPressed: () async {
+                    if (userController.user == null) {
+                      await userController.signIn();
+                    } else {
+                      await userController.signOut();
+                    }
+                  },
+                )
+              ],
+            );
+          }),
           const Spacer()
         ],
       ),
