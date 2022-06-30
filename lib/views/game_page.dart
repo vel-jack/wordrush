@@ -60,6 +60,7 @@ class _GamePage extends StatelessWidget {
         builder: (context, state) {
           if (state is GameCompletedState) {
             AudioController().done.resume();
+            context.read<TickerBloc>().add(StopTicker());
             if (score.value > userController.score) {
               userController.setScore(score.value);
             }

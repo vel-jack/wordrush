@@ -12,7 +12,7 @@ Todo.
 -  [ ] Firebase integration
     -  [x] FirebaseAuth
     -  [x] Firestore for score
-    -  [ ] Crashlytics
+    -  [x] Crashlytics
     -  [ ] FirebaseMessaging
 
 Other :
