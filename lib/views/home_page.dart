@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
@@ -8,8 +9,36 @@ import 'package:wordrush/widgets/grey_icon.dart';
 import 'package:wordrush/widgets/grey_text.dart';
 import 'package:wordrush/widgets/neomorphic_button.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Future<void> lookForNotificationWords() async {
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      _onMessageHandler(initialMessage);
+    }
+
+    FirebaseMessaging.onMessageOpenedApp.listen(_onMessageHandler);
+  }
+
+  void _onMessageHandler(RemoteMessage message) {
+    if (message.data['word'] != null) {
+      Get.to(() => GameRootWidget(word: message.data['word']));
+    }
+  }
+
+  @override
+  void initState() {
+    lookForNotificationWords();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +102,7 @@ class HomePage extends StatelessWidget {
                           size: 36,
                         ),
                   onPressed: () async {
+                    if (userController.isAuthLoading) return;
                     AudioController().tap.resume();
                     if (userController.user == null) {
                       await userController.signIn();

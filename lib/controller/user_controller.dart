@@ -12,7 +12,7 @@ class UserController extends GetxController {
   bool get isAuthLoading => _isAuthLoading.value;
   final Rx<int> _score = Rx<int>(0);
   int get score => _score.value;
-  late SharedPreferences prefs;
+  SharedPreferences? prefs;
 
   @override
   void onReady() {
@@ -27,13 +27,14 @@ class UserController extends GetxController {
     if (changedUser == null) {
       _score.value = 0;
     } else {
-      await prefs.setInt('highscore', 0);
+      prefs ??= await SharedPreferences.getInstance();
+      await prefs!.setInt('highscore', 0);
       getScore();
     }
   }
 
   Future<void> getScore() async {
-    prefs = await SharedPreferences.getInstance();
+    prefs ??= await SharedPreferences.getInstance();
     if (user != null) {
       _score.value = (await firestore
               .collection('users')
@@ -41,7 +42,7 @@ class UserController extends GetxController {
               .get())['highscore'] ??
           0;
     } else {
-      _score.value = prefs.getInt('highscore') ?? 0;
+      _score.value = prefs!.getInt('highscore') ?? 0;
     }
   }
 
@@ -52,14 +53,14 @@ class UserController extends GetxController {
           .doc(user!.uid)
           .set({"highscore": scoreToSet});
     } else {
-      await prefs.setInt('highscore', scoreToSet);
+      await prefs!.setInt('highscore', scoreToSet);
     }
     _score.value = scoreToSet;
   }
 
   Future<void> signIn() async {
     try {
-      final oldScore = prefs.getInt('highscore') ?? 0;
+      final oldScore = prefs!.getInt('highscore') ?? 0;
       _isAuthLoading.value = true;
       final googleAccount = await GoogleSignIn().signIn();
       final googleAuth = await googleAccount!.authentication;

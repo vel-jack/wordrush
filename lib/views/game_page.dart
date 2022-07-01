@@ -17,8 +17,8 @@ import 'package:wordrush/widgets/neomorphic_button.dart';
 import 'package:wordrush/widgets/neomorphic_progress.dart';
 
 class GameRootWidget extends StatelessWidget {
-  const GameRootWidget({Key? key}) : super(key: key);
-
+  const GameRootWidget({Key? key, this.word}) : super(key: key);
+  final String? word;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -27,7 +27,9 @@ class GameRootWidget extends StatelessWidget {
           create: (context) => TickerBloc(const Ticker())..add(StartTicker()),
         ),
         BlocProvider(
-          create: (context) => WordBloc(words..shuffle()),
+          create: (context) => WordBloc(word == null
+              ? [...words..shuffle()]
+              : [word!, ...words..shuffle()]),
         )
       ],
       child: const _GamePage(),
