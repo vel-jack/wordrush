@@ -9,13 +9,13 @@ Todo.
 -  [x] UI for game
 -  [x] Lock orientation to Portrait
 -  [x] Game mechanics
--  [ ] Firebase integration
+-  [x] Firebase integration
     -  [x] FirebaseAuth
     -  [x] Firestore for score
     -  [x] Crashlytics
-    -  [ ] FirebaseMessaging
+    -  [x] FirebaseMessaging
 
 Other :
 -  [ ] Github link
--  [ ] Privacy policy
+-  [x] Privacy policy
 -  [x] Sound/Audio
