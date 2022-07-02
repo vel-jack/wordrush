@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "379118590689-b7mdcq7s3l9r0mk61va9ipvar7fhkujb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emptybox.wordrush",
+            "certificate_hash": "549bce2f877621d1e0679d3373347beb878277df"
+          }
+        },
+        {
           "client_id": "379118590689-fd4ajpcc0vftat2q8bmep9hrkcoaa7a4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
