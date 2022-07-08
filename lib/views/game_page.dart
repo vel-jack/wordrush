@@ -219,6 +219,7 @@ class _GamePage extends StatelessWidget {
                             () => GameOverPage(
                                   score: score.value,
                                   bestScore: best,
+                                  word: context.read<WordBloc>().state.word,
                                 ),
                             transition: get_transition.Transition.cupertino);
                       }

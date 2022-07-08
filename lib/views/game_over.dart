@@ -7,10 +7,15 @@ import 'package:wordrush/widgets/grey_text.dart';
 import 'package:wordrush/widgets/neomorphic_button.dart';
 
 class GameOverPage extends StatelessWidget {
-  const GameOverPage({Key? key, required this.score, required this.bestScore})
+  const GameOverPage(
+      {Key? key,
+      required this.score,
+      required this.bestScore,
+      required this.word})
       : super(key: key);
   final int score;
   final int bestScore;
+  final String word;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

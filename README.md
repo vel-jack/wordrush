@@ -14,6 +14,8 @@ Todo.
     -  [x] Firestore for score
     -  [x] Crashlytics
     -  [x] FirebaseMessaging
+-  [ ] Add last word at game over page
+-  [ ] Check missing words
 
 Other :
 -  [ ] Github link
