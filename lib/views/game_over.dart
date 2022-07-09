@@ -25,13 +25,25 @@ class GameOverPage extends StatelessWidget {
           children: [
             const GreyText(
               'Time is up',
-              size: 48,
+              size: 40,
             ),
             GreyText(
               '$score',
               size: 100,
             ),
             GreyText('Best : $bestScore'),
+            const Divider(),
+            const GreyText(
+              'Answer',
+              isDown: true,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GreyText(
+                "'$word'",
+                size: 48,
+              ),
+            ),
             const SizedBox(
               height: 100,
             ),
