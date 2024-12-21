@@ -8,11 +8,10 @@ import 'package:wordrush/widgets/neomorphic_button.dart';
 
 class GameOverPage extends StatelessWidget {
   const GameOverPage(
-      {Key? key,
+      {super.key,
       required this.score,
       required this.bestScore,
-      required this.word})
-      : super(key: key);
+      required this.word});
   final int score;
   final int bestScore;
   final String word;

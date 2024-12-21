@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wordrush/utils/constants.dart';
 
 class NeomorphicProgress extends StatelessWidget {
-  const NeomorphicProgress({Key? key, this.value = 0.0, this.size = 200})
-      : super(key: key);
+  const NeomorphicProgress({super.key, this.value = 0.0, this.size = 200});
   final double value;
   final double size;
 

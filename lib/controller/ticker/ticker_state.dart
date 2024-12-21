@@ -12,7 +12,7 @@ class TickerInitial extends TickerState {
 }
 
 class TickerRunning extends TickerState {
-  const TickerRunning(int duration) : super(duration);
+  const TickerRunning(super.duration);
 }
 
 class TickerCompleted extends TickerState {

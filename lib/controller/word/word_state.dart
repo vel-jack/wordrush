@@ -18,8 +18,7 @@ class WordInitialState extends WordState {
 
 class WordLoadedState extends WordState {
   const WordLoadedState(
-      List<String> quest, List<String> answer, String word, List<bool> clicked)
-      : super(quest, answer, word, clicked);
+      super.quest, super.answer, super.word, super.clicked);
 }
 
 class GameCompletedState extends WordState {
@@ -28,12 +27,10 @@ class GameCompletedState extends WordState {
 
 class IncorrectWordState extends WordState {
   const IncorrectWordState(
-      List<String> quest, List<String> answer, String word, List<bool> clicked)
-      : super(quest, answer, word, clicked);
+      super.quest, super.answer, super.word, super.clicked);
 }
 
 class CorrectWordState extends WordState {
   const CorrectWordState(
-      List<String> quest, List<String> answer, String word, List<bool> clicked)
-      : super(quest, answer, word, clicked);
+      super.quest, super.answer, super.word, super.clicked);
 }

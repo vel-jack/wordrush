@@ -5,8 +5,7 @@ import 'package:wordrush/utils/constants.dart';
 /// two grey shades and [TextAlign.center] align
 ///
 class GreyText extends StatelessWidget {
-  const GreyText(this.text, {Key? key, this.isDown = false, this.size = 28})
-      : super(key: key);
+  const GreyText(this.text, {super.key, this.isDown = false, this.size = 28});
 
   /// Requires String text to display
   final String text;

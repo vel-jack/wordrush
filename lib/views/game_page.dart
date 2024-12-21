@@ -17,7 +17,7 @@ import 'package:wordrush/widgets/neomorphic_button.dart';
 import 'package:wordrush/widgets/neomorphic_progress.dart';
 
 class GameRootWidget extends StatelessWidget {
-  const GameRootWidget({Key? key, this.word}) : super(key: key);
+  const GameRootWidget({super.key, this.word});
   final String? word;
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class GameRootWidget extends StatelessWidget {
 }
 
 class _GamePage extends StatelessWidget {
-  const _GamePage({Key? key}) : super(key: key);
+  const _GamePage();
 
   @override
   Widget build(BuildContext context) {

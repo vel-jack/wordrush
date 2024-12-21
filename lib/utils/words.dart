@@ -9,6 +9,7 @@ final words = [
   'ANTI',
   'AREA',
   'ARMY',
+  'ATOM',
   'AWAY',
   'BABY',
   'BACK',
@@ -264,8 +265,8 @@ final words = [
   'LAZY',
   'LEAD',
   'LEFT',
-  'LEAN'
-      'LEND',
+  'LEAN',
+  'LEND',
   'LESS',
   'LEST',
   'LIFE',
@@ -577,5 +578,6 @@ final words = [
   'YEAR',
   'YOUR',
   'ZERO',
-  'ZONE'
+  'ZONE',
+  'ZOOM'
 ];

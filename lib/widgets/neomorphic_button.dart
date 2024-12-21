@@ -3,13 +3,13 @@ import 'package:wordrush/utils/constants.dart';
 
 class NeomorphicButton extends StatelessWidget {
   const NeomorphicButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.size = 80.0,
     this.isClicked = false,
     this.radius = 100.0,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final VoidCallback? onPressed;
